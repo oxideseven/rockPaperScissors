@@ -61,6 +61,9 @@ function resetGame() {
     computerScore = 0;
     roundWnner = '';
     roundNumber = 1;
+    playerSelection = '';
+    computerSelection = '';
+    roundWnner = '';
     updateInfo();
 }
 
