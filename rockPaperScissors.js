@@ -1,83 +1,115 @@
-// This is a rock paper scissors game.
+// Game Variables
+const choices = ['rock', 'paper', 'scissors'];
+const buttons = document.querySelectorAll('button');
+let playerScore = 0;
+let computerScore = 0;
+let roundWnner = '';
+let roundNumber = 1;
 
-const choices = ['ROCK', 'PAPER', 'SCISSORS']; // Obviously the choice the NPC/player can make.
+// Game Functions
 
-// Plays 5 games, and declares an overall winner.
-function game() {
-
-    let playerScore = 0; // Cumulative player score.
-    let computerScore = 0; // Cumulative PC score.
-
-    for (let i = 1; i < 6; i++){ //Loops the gameplay 5 times.
-
-        let computerSelection  = choices[computerPlay()]; // Stores the NPC play.
-        //let playerChoice;  //= prompt('Make your choice (Rock, Paper, Scissors): ', ''); // prompts user for their play
-        
-        // Prompts the user for their play, and asks again if they input anything but rock, paper, scissors.
-        function playerPlay() {
-            playerChoice  = prompt('Make your choice (Rock, Paper, Scissors): ',); // prompts user for their play
-            playerSelection = playerChoice.toUpperCase(); // stores the user play in uppercase to facilitate comparison
-            
-            // if the player inputs one of the 3 acceptable choices, move on, otherwise tell them they messed up and ask again.
-            if (playerSelection === 'ROCK' || playerSelection === "PAPER" || playerSelection === "SCISSORS"){
-            }
-            else{
-                console.log(`${playerChoice} is not acceptable.`);
-                playerPlay(); //call the function again, so the player can make a valid choice.
-            }
-        }
-
-        // The computer randomly picks rock, paper, or scissors
-        function computerPlay() {
-            return Math.floor(Math.random() * choices.length); // Picks a random number from however many choices exist in the array <choices>
-        }
-
-        // Plays a round of the game. Compares the 2 choices made.
-        function playRound (playerSelection, computerSelection) {
-    
-            // if both choices are the same, a tie is declared.
-            if (playerSelection === computerSelection) {
-                console.log(`Your Choice: ${playerChoice}; ${playerSelection} ties with ${computerSelection}! Try again!`);;
-            }
-            // these are the win states.
-            else if ( (playerSelection === 'ROCK' && computerSelection === 'SCISSORS') || (playerSelection === 'SCISSORS' && computerSelection === 'PAPER') || (playerSelection === 'PAPER' && computerSelection === 'ROCK')) {
-                console.log(`Your Choice: ${playerChoice}; You Win! ${playerSelection} beats ${computerSelection}!`);
-                ++playerScore; // Player score increases.
-            }
-            // if you don't make a choice, don't win, or don't tie, then you lose.
-            else {
-                console.log(`Your Choice: ${playerChoice}; You Lose! ${computerSelection} beats ${playerSelection}.`);
-                ++computerScore; // PC score increases.
-            }
-            
-            console.log(`ROUND ${i}/5 - You: ${playerScore}; PC: ${computerScore}`); // Report the current scores
-
-        }
-        playerPlay(); // Asks the player's choice
-        playRound(playerSelection, computerSelection); // Starts a game round.
-    
-    }
-
-    // Delcares the champion of the game.
-    function gameWinner(playerScore, computerScore) {
-        // Player has a higher score and wins.
-        if (playerScore > computerScore) {
-            console.log(`You win the championship, ${playerScore} to ${computerScore}!`);
-        }
-        // PC has a higher score, player lsoes.
-        else if (computerScore > playerScore){
-            console.log(`You lose the championship, ${computerScore} to ${playerScore}. Better luck next time.`);
-        }
-        // A tie is the only other option.
-        else {
-            console.log(`It's a tie, ${computerScore} to ${playerScore}. Solid effort.`);
-        }
-    }
-    gameWinner(playerScore, computerScore); // Report the final results.
+function computerPlay() {
+    return Math.floor(Math.random() * choices.length); 
 }
 
-game();
+function playRound(playerSelection, computerSelection) {
+    
+    if (playerSelection === computerSelection) {
+        roundWnner = 'Tie';
+    }
+    else if ((playerSelection === 'rock' && computerSelection === 'scissors') || (playerSelection === 'scissors' && computerSelection === 'paper') || (playerSelection === 'paper' && computerSelection === 'rock')) {
+        roundWnner = 'Player';
+        ++playerScore;
+    }
+    else {
+        roundWnner = 'Computer';
+        ++computerScore;
+    }
+    updateInfo();
+}
 
+function gameWinner(playerScore, computerScore) {
 
+    if (playerScore > computerScore) {
+        alert(`You win the championship, ${playerScore} to ${computerScore}!`);
+    }
+    else if (computerScore > playerScore){
+        alert(`You lose the championship, ${computerScore} to ${playerScore}. Better luck next time.`);
+    }
+    else {
+        alert(`It's a tie, ${computerScore} to ${playerScore}. Solid effort.`);
+    }
+}
 
-//console.log(computerSelection); // displays the item from the array matching the random number picked in the function.
+function isGameOver() {
+    if (roundNumber === 5 && playerScore > computerScore) {
+        alert(`You win the championship, ${playerScore} to ${computerScore}!`);
+        resetGame();
+    }
+    if (roundNumber === 5 && computerScore > playerScore) { 
+        alert(`You lose the championship, ${computerScore} to ${playerScore}. Better luck next time.`);
+        resetGame();
+    }
+    if (roundNumber === 5 && computerScore === playerScore) {
+        alert(`It's a tie, ${computerScore} to ${playerScore}. Solid effort.`);
+        resetGame();
+    }
+}
+
+function resetGame() {
+    playerScore = 0;
+    computerScore = 0;
+    roundWnner = '';
+    roundNumber = 1;
+    updateInfo();
+}
+
+function updateInfo() {
+    pChoiceOutput.textContent = capitalizeFirst(playerSelection);
+    compChoiceOutput.textContent = capitalizeFirst(computerSelection);
+    rWinnerOutput.textContent = roundWnner;
+    compScoreOutput.textContent = computerScore;
+    pScoreOutput.textContent = playerScore;
+    currentRoundOutput.textContent = roundNumber;
+
+    if (roundWnner === 'Computer') {
+        rWinnerOutput.style.cssText = 'color: var(--computer)';
+    }
+    if (roundWnner === 'Player') {
+        rWinnerOutput.style.cssText = 'color: var(--player)'; 
+    }
+    if (roundWnner === 'Tie') {
+        rWinnerOutput.style.cssText = 'color: grey'; 
+    }
+
+}
+
+//UI Variables
+const pChoiceOutput = document.querySelector('.pChoiceOutput');
+const compChoiceOutput = document.querySelector('.compChoiceOutput');
+const pScoreOutput = document.querySelector('.pScoreOutput');
+const compScoreOutput = document.querySelector('.compScoreOutput');
+const rWinnerOutput = document.querySelector('.rWinnerOutput');
+const currentRoundOutput = document.querySelector('.currentRoundOutput');
+
+// UI Functions
+
+buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+        playerSelection = button.id;
+        computerSelection = choices[computerPlay()];
+        playRound(playerSelection, computerSelection);
+        ++roundNumber;
+        updateInfo();
+        isGameOver();
+        
+    });
+});
+
+function capitalizeFirst(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
+}
+
+compScoreOutput.textContent = computerScore;
+pScoreOutput.textContent = playerScore;
+currentRoundOutput.textContent = roundNumber;

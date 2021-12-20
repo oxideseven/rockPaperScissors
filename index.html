@@ -3,8 +3,50 @@
     <head>
         <title>Rock Paper Scissors</title>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="./style.css">
+        <script src = "./rockPaperScissors.js" defer></script>
     </head>
+    
     <body>
-        <script src = "./rockPaperScissors.js"></script>
+        <article>
+            <header>Rock | Paper | Scissors</header>
+            <main>
+                <div class = "top">
+                    <h3>Make your choice:</h3>
+                    <h4>Five rounds to decide your fate!</h4>
+                    <div class = "currentRound">Round: <span class = "currentRoundOutput"></span></div>
+                </div>
+
+                <div class = "middle">
+                    <div class = "choices">
+                        <div class = "pChoice">Player's Choice: <span class = "pChoiceOutput"></span></div>
+                        <div class = "compChoice">Computer's Choice: <span class = "compChoiceOutput"></span></div>
+                    </div>
+
+                    <div class = "rWinner">Winner: <span class = "rWinnerOutput"></span></div>
+
+                    <div class = "buttons">
+                        <button class = "btn" id = "rock">Rock</button>
+                        <button class = "btn" id = "paper">Paper</button>
+                        <button class = "btn" id = "scissors">Scissors</button>
+                    </div>
+                </div>
+
+                <div class = "bottom">
+                    <div class = "pScore">Player's Score: <span class = "pScoreOutput"></span> </div>
+                    <div class = "compScore">Computer's Score: <span class = "compScoreOutput"></span></div>
+                </div>
+            </main>
+            <footer>
+                <p>
+                    Copyright ©
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script>
+                    <a href="https://github.com/oxideseven" target="_blank">
+                        oxideSeven</a>
+                </p>
+            </footer>
+        </article>
     </body>
 </html>
